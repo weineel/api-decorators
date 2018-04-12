@@ -1,15 +1,5 @@
 import Options from './options'
 
-export class ApiResultError extends Error {
-  code = -1
-  origin = {}
-  constructor(code, message, origin) {
-    super(message)
-    this.code = code
-    this.origin = origin
-  }
-}
-
 export const Resolves = {
   default: Symbol('default'),
   field: Symbol('field')

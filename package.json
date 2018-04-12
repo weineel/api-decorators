@@ -1,6 +1,6 @@
 {
   "name": "api-decorators",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "基于flyio的封装，添加装饰器功能。",
   "main": "src/index.js",
   "dependencies": {

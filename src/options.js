@@ -1,5 +1,6 @@
+import { ApiResultError } from './error'
+
 const Options = {
-  baseURL: '',
   success(data) {
     return data.status === 0 ? data.data === undefined ? data : data.data : false
   },

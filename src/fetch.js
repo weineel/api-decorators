@@ -1,15 +1,11 @@
 import Fly from 'flyio'
 import Options from './options'
+import { NetError } from './error'
 
 const debug = require('debug')('fetch:')
 const fetch = new Fly()
-fetch.config.timeout = 15000
-fetch.config.baseURL = Options.baseURL
 
 // 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-
-class NetError extends Error {
-}
 
 // POST传参序列化(添加请求拦截器)
 fetch.interceptors.request.use(config => {
