@@ -1,3 +1,5 @@
+import Options from './options'
+
 export class ApiResultError extends Error {
   code = -1
   origin = {}
@@ -21,10 +23,6 @@ export function Resolve(type, fieldNames) {
   }
 }
 
-function isSuccess(data) {
-  return data.status === 200
-}
-
 /**
  * 默认解析修饰器
  */
@@ -34,10 +32,10 @@ export function DefaultResolve(target, name, descriptor) {
     return new Promise((resolve, reject) => {
       oFunc.apply(target, args)
         .then(data => {
-          if (isSuccess(data)) {
+          if (Options.success(data)) {
             resolve(data.data)
           } else {
-            reject(new ApiResultError(data.code, data.message, data))
+            reject(Options.error(data))
           }
         })
         .catch(err => {
@@ -58,7 +56,7 @@ export function FieldResolve(fieldNames = []) {
       return new Promise((resolve, reject) => {
         oFunc.apply(target, args)
           .then(data => {
-            if (isSuccess(data)) {
+            if (Options.success(data)) {
               if (typeof fieldNames === 'string') resolve(data.data[fieldNames])
               else if (fieldNames instanceof Array) {
                 const obj = {}
@@ -72,7 +70,7 @@ export function FieldResolve(fieldNames = []) {
                 reject(error)
               }
             } else {
-              reject(new ApiResultError(data.code, data.message, data))
+              reject(Options.error(data))
             }
           })
           .catch(err => {

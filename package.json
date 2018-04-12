@@ -2,7 +2,7 @@
   "name": "api-decorators",
   "version": "0.0.1",
   "description": "基于flyio的封装，添加装饰器功能。",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "https://github.com/weineel/api-decorators.git",
   "author": "weineel",
   "license": "MIT",
