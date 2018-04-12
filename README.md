@@ -2,7 +2,7 @@
 
 > 使用装饰器实现接口数据(promise 返回的)解析等功能能。
 
-本项目依赖了flyio作为网络请求框架，当然可以更换为任意可以使用Promise的库，需要重新`src/fetch.js`的部分实现。
+本项目适配了flyio作为网络请求框架，当然可以更换为任意可以使用Promise的库。
 
 ## 配置示例
 
@@ -41,12 +41,13 @@ Options.error = function(data) {
 ## 使用示例
 
 ```javascript
-import { fetch, DefaultResolve } from 'api-decorators'
+import fetch from 'flyio'
+import { DefaultResolve } from 'api-decorators'
 
 export default class HomeApis {
   @DefaultResolve
   static sampleApi({ num = 1, size = 2 } = { num: 1, size: 2 }) {
-    return apis.get(`sample/api?per_page=${size}&page=${num}`)
+    return fetch.get(`sample/api?per_page=${size}&page=${num}`)
   }
 }
 ```

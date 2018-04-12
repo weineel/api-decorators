@@ -6,6 +6,3 @@ export class ApiResultError extends Error {
     this.origin = origin || {}
   }
 }
-
-export class NetError extends Error {
-}
