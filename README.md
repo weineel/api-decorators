@@ -7,7 +7,13 @@
 ## 配置示例
 
 ```javascript
-import Options from 'api-decorators/resolve-decorator'
+// export default from './fetch'
+import Options, { fetch, ApiResultError } from 'api-decorators'
+import { BaseURL } from '../constant/common'
+
+// fetch(flyio) base url
+fetch.config.timeout = 15000
+fetch.config.baseURL = BaseURL
 
 Options.success = function(data) {
   return data.status === 200 ? data.data === undefined ? data : data.data : false
@@ -29,13 +35,13 @@ Options.error = function(data) {
   return new ApiResultError(data.status, data.message, data)
 }
 
+
 ```
 
 ## 使用示例
 
 ```javascript
-import apis from 'api-decorators/fetch'
-import { DefaultResolve } from 'api-decorators/resolve-decorator'
+import { fetch, DefaultResolve } from 'api-decorators'
 
 export default class HomeApis {
   @DefaultResolve
