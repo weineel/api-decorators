@@ -1,10 +1,10 @@
 import Fly from 'flyio'
-import { BaseURL } from '../constant/common'
+import Options from './options'
 
 const debug = require('debug')('fetch:')
 const fetch = new Fly()
 fetch.config.timeout = 15000
-fetch.config.baseURL = BaseURL
+fetch.config.baseURL = Options.baseURL
 
 // 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
 
