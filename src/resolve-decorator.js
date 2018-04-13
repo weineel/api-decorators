@@ -19,19 +19,18 @@ export function Resolve(type, fieldNames) {
 export function DefaultResolve(target, name, descriptor) {
   const oFunc = descriptor.value
   descriptor.value = function(...args) {
-    return new Promise((resolve, reject) => {
-      oFunc.apply(target, args)
-        .then(data => {
-          if (Options.success(data)) {
-            resolve(data.data)
-          } else {
-            reject(Options.error(data))
-          }
-        })
-        .catch(err => {
-          reject(err)
-        })
-    })
+    return oFunc.apply(target, args)
+      .then(data => {
+        const nData = Options.success(data)
+        if (nData) {
+          return nData
+        } else {
+          return Promise.reject(Options.error(data))
+        }
+      })
+      .catch(err => {
+        return Promise.reject(err)
+      })
   }
   return descriptor
 }
@@ -43,30 +42,30 @@ export function FieldResolve(fieldNames = []) {
   return (target, name, descriptor) => {
     const oFunc = descriptor.value
     descriptor.value = function(...args) {
-      return new Promise((resolve, reject) => {
-        oFunc.apply(target, args)
-          .then(data => {
-            if (Options.success(data)) {
-              if (typeof fieldNames === 'string') resolve(data.data[fieldNames])
-              else if (fieldNames instanceof Array) {
-                const obj = {}
-                for (fieldName of fieldNames) {
-                  obj[fieldNames] = data.data[fieldName]
-                }
-                resolve(obj)
-              } else {
-                const error = new Error(`FieldResolve function: parameter fieldNames must be String or Array, but pass ${typeof fieldNames}`)
-                console.error(error)
-                reject(error)
+      return oFunc.apply(target, args)
+        .then(data => {
+          const nData = Options.success(data)
+          if (nData) {
+            if (typeof fieldNames === 'string') {
+              return nData[fieldNames]
+            } else if (fieldNames instanceof Array) {
+              const obj = {}
+              for (fieldName of fieldNames) {
+                obj[fieldNames] = nData[fieldName]
               }
+              return obj
             } else {
-              reject(Options.error(data))
+              const error = new Error(`api-decorator [FieldResolve] function: parameter fieldNames must be String or Array, but pass ${typeof fieldNames}`)
+              console.error(error)
+              return Promise.reject(error)
             }
-          })
-          .catch(err => {
-            reject(err)
-          })
-      })
+          } else {
+            return Promise.reject(Options.error(data))
+          }
+        })
+        .catch(err => {
+          return Promise.reject(err)
+        })
     }
     return descriptor
   }
