@@ -28,9 +28,6 @@ export function DefaultResolve(target, name, descriptor) {
           return Promise.reject(Options.error(data))
         }
       })
-      .catch(err => {
-        return Promise.reject(err)
-      })
   }
   return descriptor
 }
@@ -62,9 +59,6 @@ export function FieldResolve(fieldNames = []) {
           } else {
             return Promise.reject(Options.error(data))
           }
-        })
-        .catch(err => {
-          return Promise.reject(err)
         })
     }
     return descriptor
